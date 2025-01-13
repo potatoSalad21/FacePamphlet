@@ -30,6 +30,23 @@ public class FacePamphlet extends ConsoleProgram
      * to respond to these actions.
      */
     public void actionPerformed(ActionEvent e) {
+        String cmd = e.getActionCommand();
+        switch (cmd) {
+        case "Add":
+        case "Delete":
+        case "Lookup":
+            println(cmd + ": " + nameField.getText());
+            break;
+        case "Change Status":
+            println(cmd + ": " + statusField.getText());
+            break;
+        case "Change Picture":
+            println(cmd + ": " + pictureField.getText());
+            break;
+        case "Add Friend":
+            println(cmd + ": " + newFriendField.getText());
+            break;
+        }
 	}
 
     // adds all the interactors for the GUI
@@ -40,28 +57,28 @@ public class FacePamphlet extends ConsoleProgram
 
     private void addNorthInteractors() {
         JLabel nameLabel = new JLabel("Name");
-        JTextField textField = new JTextField("", TEXT_FIELD_SIZE);
-        textField.addActionListener(this);
+        nameField = new JTextField("", TEXT_FIELD_SIZE);
+        nameField.addActionListener(this);
 
         add(nameLabel, NORTH);
-        add(textField, NORTH);
+        add(nameField, NORTH);
         add(new JButton("Add"), NORTH);
         add(new JButton("Delete"), NORTH);
         add(new JButton("Lookup"), NORTH);
     }
 
     private void addWestInteractors() {
-        JTextField statusField = new JTextField("", TEXT_FIELD_SIZE);
+        statusField = new JTextField("", TEXT_FIELD_SIZE);
         statusField.setActionCommand("Change Status");
         statusField.addActionListener(this);
         add(new JLabel(EMPTY_LABEL_TEXT), WEST); // leave empty space
 
-        JTextField pictureField = new JTextField("", TEXT_FIELD_SIZE);
+        pictureField = new JTextField("", TEXT_FIELD_SIZE);
         statusField.setActionCommand("Change Picture");
         pictureField.addActionListener(this);
         add(new JLabel(EMPTY_LABEL_TEXT), WEST); // leave empty space
 
-        JTextField newFriendField = new JTextField("", TEXT_FIELD_SIZE);
+        newFriendField = new JTextField("", TEXT_FIELD_SIZE);
         statusField.setActionCommand("Add Friend");
         newFriendField.addActionListener(this);
 
@@ -72,4 +89,10 @@ public class FacePamphlet extends ConsoleProgram
         add(newFriendField, WEST);
         add(new JButton("Add Friend"), WEST);
     }
+
+    /* INSTANCE VARIABLES */
+    JTextField nameField;
+    JTextField statusField;
+    JTextField pictureField;
+    JTextField newFriendField;
 }
