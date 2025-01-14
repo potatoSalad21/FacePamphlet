@@ -20,6 +20,7 @@ public class FacePamphlet extends ConsoleProgram
 	 * initialization that needs to be performed.
 	 */
 	public void init() {
+        db = new FacePamphletDatabase();
         addInteractors();
         addActionListeners();
     }
@@ -95,4 +96,6 @@ public class FacePamphlet extends ConsoleProgram
     JTextField statusField;
     JTextField pictureField;
     JTextField newFriendField;
+
+    FacePamphletDatabase db;
 }
