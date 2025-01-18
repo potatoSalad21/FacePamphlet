@@ -44,6 +44,7 @@ public class FacePamphlet extends ConsoleProgram
                 println("Add: new profile: " + profile.toString());
             }
             activeProfile = db.getProfile(name);
+            println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
             break;
         case "Delete":
             if (db.containsProfile(name)) {
@@ -53,6 +54,7 @@ public class FacePamphlet extends ConsoleProgram
                 println("Delete: profile with the name " + name + " does not exist");
             }
             activeProfile = null;
+            println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
             break;
         case "Lookup":
             if (db.containsProfile(name)) {
@@ -63,15 +65,24 @@ public class FacePamphlet extends ConsoleProgram
                 println("Lookup: profile with name " + name + " does not exist");
                 activeProfile = null;
             }
+            println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
             break;
         case "Change Status":
-            println(cmd + ": " + statusField.getText());
+            if (activeProfile != null && db.containsProfile(activeProfile.getName())) {
+                println("Status updated to " + statusField.getText());
+                activeProfile.setStatus(statusField.getText());
+                println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
+            } else {
+                println("No active profile; Select the profile first");
+            }
+
             break;
         case "Change Picture":
             println(cmd + ": " + pictureField.getText());
             break;
         case "Add Friend":
             println(cmd + ": " + newFriendField.getText());
+            println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
             break;
         }
 	}
@@ -101,12 +112,12 @@ public class FacePamphlet extends ConsoleProgram
         add(new JLabel(EMPTY_LABEL_TEXT), WEST); // leave empty space
 
         pictureField = new JTextField("", TEXT_FIELD_SIZE);
-        statusField.setActionCommand("Change Picture");
+        pictureField.setActionCommand("Change Picture");
         pictureField.addActionListener(this);
         add(new JLabel(EMPTY_LABEL_TEXT), WEST); // leave empty space
 
         newFriendField = new JTextField("", TEXT_FIELD_SIZE);
-        statusField.setActionCommand("Add Friend");
+        newFriendField.setActionCommand("Add Friend");
         newFriendField.addActionListener(this);
 
         add(statusField, WEST);
