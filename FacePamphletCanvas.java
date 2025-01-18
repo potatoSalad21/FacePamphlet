@@ -92,8 +92,7 @@ public class FacePamphletCanvas extends GCanvas
 
     private void drawProfilePicture(GImage img) {
         if (img != null) {
-            // TODO change to scale method
-            img.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
+            img.scale(IMAGE_WIDTH / img.getWidth(), IMAGE_HEIGHT / img.getHeight());
             add(img, LEFT_MARGIN, TOP_MARGIN);
             return;
         }

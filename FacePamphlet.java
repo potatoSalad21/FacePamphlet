@@ -99,6 +99,7 @@ public class FacePamphlet extends Program
 
     private void handleStatusChange() {
         if (activeProfile != null) {
+            String status = statusField.getText();
             activeProfile.setStatus(statusField.getText());
 
             canvas.showMessage("Status updated to " + activeProfile.getStatus());
@@ -112,6 +113,7 @@ public class FacePamphlet extends Program
         if (activeProfile != null) {
             GImage image;
             String imgName = pictureField.getText();
+            if (imgName.equals("")) return; // do nothing if the field is empty
             try {
                 image = new GImage(imgName);
                 activeProfile.setImage(image);
