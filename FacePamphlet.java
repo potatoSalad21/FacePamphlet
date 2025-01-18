@@ -41,8 +41,9 @@ public class FacePamphlet extends ConsoleProgram
             } else {
                 FacePamphletProfile profile = new FacePamphletProfile(name);
                 db.addProfile(profile);
-                println("Add: new profile: " + db.getProfile(name).toString());
+                println("Add: new profile: " + profile.toString());
             }
+            activeProfile = db.getProfile(name);
             break;
         case "Delete":
             if (db.containsProfile(name)) {
@@ -51,12 +52,16 @@ public class FacePamphlet extends ConsoleProgram
             } else {
                 println("Delete: profile with the name " + name + " does not exist");
             }
+            activeProfile = null;
             break;
         case "Lookup":
             if (db.containsProfile(name)) {
-                println("Lookup: " + db.getProfile(name).toString());
+                FacePamphletProfile profile = db.getProfile(name);
+                println("Lookup: " + profile.toString());
+                activeProfile = profile;
             } else {
                 println("Lookup: profile with name " + name + " does not exist");
+                activeProfile = null;
             }
             break;
         case "Change Status":
