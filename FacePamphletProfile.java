@@ -115,7 +115,7 @@ public class FacePamphletProfile implements FacePamphletConstants {
     /* INSTANCE VARIABLES */
     private String name = "";
     private String status = "";
-    private GImage profilePic;
+    private GImage profilePic = null;
     private ArrayList<String> friends = new ArrayList<>();
 
 }

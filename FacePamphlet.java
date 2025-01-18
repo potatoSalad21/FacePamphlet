@@ -20,9 +20,11 @@ public class FacePamphlet extends Program
 	 * initialization that needs to be performed.
 	 */
 	public void init() {
+        setSize(APPLICATION_WIDTH, APPLICATION_HEIGHT);
         db = new FacePamphletDatabase();
         canvas = new FacePamphletCanvas();
         add(canvas);
+
         addInteractors();
         addActionListeners();
     }
@@ -32,7 +34,6 @@ public class FacePamphlet extends Program
      * clicked or interactors are used, so you will have to add code
      * to respond to these actions.
      */
-    // TODO remove println calls
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
         String name = nameField.getText();
@@ -61,82 +62,88 @@ public class FacePamphlet extends Program
 
     private void handleProfileAdd(String name) {
         if (db.containsProfile(name)) {
-            println("Add: profile for " + name + " already exists: " + db.getProfile(name).toString());
+            canvas.displayProfile(db.getProfile(name));
+            canvas.showMessage("A profile with the name " + name + " already exists");
         } else {
             FacePamphletProfile profile = new FacePamphletProfile(name);
             db.addProfile(profile);
-            println("Add: new profile: " + profile.toString());
+            canvas.displayProfile(profile);
+            canvas.showMessage("New profile created");
         }
         activeProfile = db.getProfile(name);
-        println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
     }
 
     private void handleProfileDelete(String name) {
         if (db.containsProfile(name)) {
             db.deleteProfile(name);
-            println("Delete: profile of " + name + " deleted");
+            canvas.showMessage("Profile of " + name + " deleted");
         } else {
-            println("Delete: profile with the name " + name + " does not exist");
+            canvas.showMessage("A profile with the name " + name + " does not exist");
         }
+        canvas.removeAll();
         activeProfile = null;
-        println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
     }
 
     private void handleProfileLookup(String name) {
         if (db.containsProfile(name)) {
             FacePamphletProfile profile = db.getProfile(name);
-            println("Lookup: " + profile.toString());
+            canvas.displayProfile(profile);
+            canvas.showMessage("Displaying " + name);
             activeProfile = profile;
         } else {
-            println("Lookup: profile with name " + name + " does not exist");
+            canvas.showMessage("A profile with the name " + name + " does not exist");
+            canvas.removeAll();
             activeProfile = null;
         }
-        println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
     }
 
     private void handleStatusChange() {
         if (activeProfile != null) {
-            println("Status updated to " + statusField.getText());
             activeProfile.setStatus(statusField.getText());
-            println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
+
+            canvas.showMessage("Status updated to " + activeProfile.getStatus());
+            canvas.displayProfile(activeProfile);
         } else {
-            println("No active profile; Select the profile first");
+            canvas.showMessage("Please select a profile to change status");
         }
     }
 
     private void handlePictureChange() {
         if (activeProfile != null) {
             GImage image;
+            String imgName = pictureField.getText();
             try {
-                image = new GImage(pictureField.getText());
+                image = new GImage(imgName);
                 activeProfile.setImage(image);
-                println("Change Picture: profile picture changed to: " + pictureField.getText());
+
+                canvas.displayProfile(activeProfile);
+                canvas.showMessage("Picture updated");
             } catch (ErrorException ex) {
-                println("Change Picture: Invalid filename");
+                canvas.showMessage("Unable to open image file: " + imgName);
             }
         } else {
-            println("No active profile; Select the profile first");
+            canvas.showMessage("Please select a profile to change picture");
         }
     }
 
     private void handleAddFriend() {
         if (activeProfile != null) {
             String friendName = newFriendField.getText();
-            if (db.containsProfile(friendName) && activeProfile.getName() != friendName) {
+            String name = activeProfile.getName();
+            if (db.containsProfile(friendName)) {
                 if (!activeProfile.addFriend(friendName)) {
-                    println("Add Friend: Name is already in the friend list");
+                    canvas.showMessage(name + " already has " + friendName + " as a friend");
                 } else {
                     db.getProfile(friendName).addFriend(activeProfile.getName());
-                    println("Add Friend: Added to friend list");
+                    canvas.displayProfile(activeProfile);
+                    canvas.showMessage(friendName + " added as a friend");
                 }
             } else {
-                println("Add Friend: invalid friend name");
+                canvas.showMessage(friendName + " does not exist");
             }
         } else {
-            println("Add Friend: No active profile; Select the profile first");
+            canvas.showMessage("Please select a profile to add friend");
         }
-
-        println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
     }
 
     // adds all the interactors for the GUI
