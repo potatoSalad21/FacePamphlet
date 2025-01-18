@@ -30,6 +30,7 @@ public class FacePamphlet extends ConsoleProgram
      * clicked or interactors are used, so you will have to add code
      * to respond to these actions.
      */
+    // TODO decompose this shit
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
         String name = nameField.getText();
@@ -68,7 +69,7 @@ public class FacePamphlet extends ConsoleProgram
             println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
             break;
         case "Change Status":
-            if (activeProfile != null && db.containsProfile(activeProfile.getName())) {
+            if (activeProfile != null) {
                 println("Status updated to " + statusField.getText());
                 activeProfile.setStatus(statusField.getText());
                 println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
@@ -78,10 +79,37 @@ public class FacePamphlet extends ConsoleProgram
 
             break;
         case "Change Picture":
-            println(cmd + ": " + pictureField.getText());
+            if (activeProfile != null) {
+                GImage image;
+                try {
+                    image = new GImage(pictureField.getText());
+                    activeProfile.setImage(image);
+                    println("Change Picture: profile picture changed to: " + pictureField.getText());
+                } catch (ErrorException ex) {
+                    println("Change Picture: Invalid filename");
+                }
+            } else {
+                println("No active profile; Select the profile first");
+            }
+
             break;
         case "Add Friend":
-            println(cmd + ": " + newFriendField.getText());
+            if (activeProfile != null) {
+                String friendName = newFriendField.getText();
+                if (db.containsProfile(friendName)) {
+                    if (!activeProfile.addFriend(friendName)) {
+                        println("Add Friend: Name is already in the friend list");
+                    } else {
+                        db.getProfile(friendName).addFriend(activeProfile.getName());
+                        println("Add Friend: Added to friend list");
+                    }
+                } else {
+                    println("Add Friend: invalid friend name");
+                }
+            } else {
+                println("Add Friend: No active profile; Select the profile first");
+            }
+
             println(activeProfile != null ? ":: > Current profile: " + activeProfile.toString() : ":: > No current profile");
             break;
         }
