@@ -32,11 +32,32 @@ public class FacePamphlet extends ConsoleProgram
      */
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
+        String name = nameField.getText();
+
         switch (cmd) {
         case "Add":
+            if (db.containsProfile(name)) {
+                println("Add: profile for " + name + " already exists: " + db.getProfile(name).toString());
+            } else {
+                FacePamphletProfile profile = new FacePamphletProfile(name);
+                db.addProfile(profile);
+                println("Add: new profile: " + db.getProfile(name).toString());
+            }
+            break;
         case "Delete":
+            if (db.containsProfile(name)) {
+                db.deleteProfile(name);
+                println("Delete: profile of " + name + " deleted");
+            } else {
+                println("Delete: profile with the name " + name + " does not exist");
+            }
+            break;
         case "Lookup":
-            println(cmd + ": " + nameField.getText());
+            if (db.containsProfile(name)) {
+                println("Lookup: " + db.getProfile(name).toString());
+            } else {
+                println("Lookup: profile with name " + name + " does not exist");
+            }
             break;
         case "Change Status":
             println(cmd + ": " + statusField.getText());
@@ -92,10 +113,13 @@ public class FacePamphlet extends ConsoleProgram
     }
 
     /* INSTANCE VARIABLES */
+
+    // GUI components
     JTextField nameField;
     JTextField statusField;
     JTextField pictureField;
     JTextField newFriendField;
 
     FacePamphletDatabase db;
+    FacePamphletProfile activeProfile;
 }

@@ -19,6 +19,7 @@ public class FacePamphletProfile implements FacePamphletConstants {
 	 * the profile.
 	 */
 	public FacePamphletProfile(String name) {
+        this.name = name;
 	}
 
 	/** This method returns the name associated with the profile. */
@@ -112,9 +113,9 @@ public class FacePamphletProfile implements FacePamphletConstants {
 	}
 
     /* INSTANCE VARIABLES */
-    private String name;
-    private String status;
+    private String name = "";
+    private String status = "";
     private GImage profilePic;
-    private ArrayList<String> friends;
+    private ArrayList<String> friends = new ArrayList<>();
 
 }
