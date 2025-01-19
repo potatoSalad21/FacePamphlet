@@ -49,19 +49,19 @@ public class FacePamphletCanvas extends GCanvas
 	 * the user, and a list of the user's friends in the social network.
 	 */
 	public void displayProfile(FacePamphletProfile profile) {
-        removeAll();
         drawProfileName(profile.getName());
         drawProfilePicture(profile.getImage());
         drawProfileStatus(profile.getName(), profile.getStatus());
         drawFriends(profile.getFriends());
 	}
 
+    // draw the friend labels
     private void drawFriends(Iterator<String> friends) {
         GLabel headerLabel = new GLabel("Friends:");
         headerLabel.setFont(PROFILE_FRIEND_LABEL_FONT);
         add(headerLabel, getWidth() / 2.0, TOP_MARGIN);
 
-        int friendNum = 0;
+        int friendNum = 1;
         double headerHeight = headerLabel.getHeight();
         while (friends.hasNext()) {
             String friend = friends.next();
@@ -75,7 +75,7 @@ public class FacePamphletCanvas extends GCanvas
 
     private void drawProfileStatus(String name, String status) {
         GLabel statusLabel = new GLabel("No current status");
-        if (status != "") {
+        if (!status.isEmpty()) {
             statusLabel.setLabel(name + " is " + status);
         }
         statusLabel.setFont(PROFILE_STATUS_FONT);

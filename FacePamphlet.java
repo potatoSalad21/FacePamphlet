@@ -37,6 +37,7 @@ public class FacePamphlet extends Program
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
         String name = nameField.getText();
+        canvas.removeAll(); // clear the canvas before updating it
 
         switch (cmd) {
         case "Add":
@@ -60,6 +61,7 @@ public class FacePamphlet extends Program
         }
 	}
 
+    // check if the profile exists, create and add if it doesn't
     private void handleProfileAdd(String name) {
         if (db.containsProfile(name)) {
             canvas.displayProfile(db.getProfile(name));
@@ -73,6 +75,7 @@ public class FacePamphlet extends Program
         activeProfile = db.getProfile(name);
     }
 
+    // deletes the profile if it exists and handles its friend list
     private void handleProfileDelete(String name) {
         if (db.containsProfile(name)) {
             db.deleteProfile(name);
@@ -80,7 +83,6 @@ public class FacePamphlet extends Program
         } else {
             canvas.showMessage("A profile with the name " + name + " does not exist");
         }
-        canvas.removeAll();
         activeProfile = null;
     }
 
@@ -92,7 +94,6 @@ public class FacePamphlet extends Program
             activeProfile = profile;
         } else {
             canvas.showMessage("A profile with the name " + name + " does not exist");
-            canvas.removeAll();
             activeProfile = null;
         }
     }
@@ -113,7 +114,7 @@ public class FacePamphlet extends Program
         if (activeProfile != null) {
             GImage image;
             String imgName = pictureField.getText();
-            if (imgName.equals("")) return; // do nothing if the field is empty
+            if (imgName.isEmpty()) return; // do nothing if the field is empty
             try {
                 image = new GImage(imgName);
                 activeProfile.setImage(image);

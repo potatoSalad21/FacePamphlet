@@ -51,6 +51,10 @@ public class FacePamphletDatabase implements FacePamphletConstants {
 	 * the database is unchanged after calling this method.
 	 */
 	public void deleteProfile(String name) {
+		for (FacePamphletProfile profile : profileMap.values()) {
+			profile.removeFriend(name);
+		}
+
         profileMap.remove(name);
 	}
 
