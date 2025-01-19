@@ -73,6 +73,7 @@ public class FacePamphletCanvas extends GCanvas
         }
     }
 
+    // draw profile status if it's not empty
     private void drawProfileStatus(String name, String status) {
         GLabel statusLabel = new GLabel("No current status");
         if (!status.isEmpty()) {
@@ -82,18 +83,20 @@ public class FacePamphletCanvas extends GCanvas
         add(statusLabel, LEFT_MARGIN, TOP_MARGIN + IMAGE_HEIGHT + STATUS_MARGIN);
     }
 
+    // draw the profile name
     private void drawProfileName(String name) {
         GLabel nameLabel = new GLabel(name);
         nameLabel.setColor(Color.BLUE);
         nameLabel.setFont(PROFILE_NAME_FONT);
 
-        add(nameLabel, LEFT_MARGIN - nameLabel.getWidth(), TOP_MARGIN - nameLabel.getAscent());
+        add(nameLabel, LEFT_MARGIN, TOP_MARGIN);
     }
 
+    // draw the profile picture (or a placeholder)
     private void drawProfilePicture(GImage img) {
         if (img != null) {
             img.scale(IMAGE_WIDTH / img.getWidth(), IMAGE_HEIGHT / img.getHeight());
-            add(img, LEFT_MARGIN, TOP_MARGIN);
+            add(img, LEFT_MARGIN, TOP_MARGIN + IMAGE_MARGIN);
             return;
         }
 

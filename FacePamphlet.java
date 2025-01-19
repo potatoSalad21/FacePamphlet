@@ -86,6 +86,7 @@ public class FacePamphlet extends Program
         activeProfile = null;
     }
 
+    // looks up the profile if it exists and updates active profile
     private void handleProfileLookup(String name) {
         if (db.containsProfile(name)) {
             FacePamphletProfile profile = db.getProfile(name);
@@ -98,6 +99,7 @@ public class FacePamphlet extends Program
         }
     }
 
+    // changes the status if the active profile exists
     private void handleStatusChange() {
         if (activeProfile != null) {
             String status = statusField.getText();
@@ -110,6 +112,7 @@ public class FacePamphlet extends Program
         }
     }
 
+    // changes the profile picture if the active profile exists AND if the image name is valid
     private void handlePictureChange() {
         if (activeProfile != null) {
             GImage image;
@@ -129,6 +132,7 @@ public class FacePamphlet extends Program
         }
     }
 
+    // adds a profile as a friend if the name is valid
     private void handleAddFriend() {
         if (activeProfile != null) {
             String friendName = newFriendField.getText();
@@ -155,6 +159,7 @@ public class FacePamphlet extends Program
         addWestInteractors();
     }
 
+    // add interactors for adding/deleting/looking up profiles
     private void addNorthInteractors() {
         JLabel nameLabel = new JLabel("Name");
         nameField = new JTextField("", TEXT_FIELD_SIZE);
@@ -167,6 +172,7 @@ public class FacePamphlet extends Program
         add(new JButton("Lookup"), NORTH);
     }
 
+    // add interactors for managing profiles
     private void addWestInteractors() {
         statusField = new JTextField("", TEXT_FIELD_SIZE);
         statusField.setActionCommand("Change Status");
